@@ -1,3 +1,4 @@
+name             "serverdensity"
 maintainer       "Avrohom Katz"
 maintainer_email "iambpentameter@gmail.com"
 license          "MIT"
