@@ -5,20 +5,22 @@
 # Copyright 2012, Escape Studios
 #
 
-#install the server monitor
-package "sd-agent" do
-	action :install
+if node["serverdensity"]["data_bag"]
+	item = node["serverdensity"]["data_bag_item"] || node["fqdn"]
+	sd_vars = data_bag_item(node["serverdensity"]["data_bag"], item)
+else
+	sd_vars = node["serverdensity"]
 end
 
-#configure your Server Density agent key
+# configure your Server Density agent key
 template "/etc/sd-agent/config.cfg" do
 	source "config.cfg.erb"
 	owner "root"
 	group "root"
 	mode "640"
 	variables(
-		:sd_url => node[:serverdensity][:sd_url],
-		:agent_key => node[:serverdensity][:agent_key]
+		:sd_url => sd_vars["sd_url"],
+		:agent_key => sd_vars["agent_key"]
 	)
 	notifies :restart, "service[sd-agent]"
 end
