@@ -11,5 +11,8 @@ default['serverdensity']['data_bag'] = nil
 # The host foo.example.com thus has the item ID foo_example_com by default
 default['serverdensity']['data_bag_item'] = nil
 
+default['serverdensity']['user'] = "sd-agent"
+default['serverdensity']['group'] = "sd-agent"
+
 default['serverdensity']['agent_key'] = "CHANGE_ME"
 default['serverdensity']['sd_url'] = "CHANGE_ME"
