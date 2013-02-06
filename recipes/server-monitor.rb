@@ -6,7 +6,7 @@
 #
 
 if node["serverdensity"]["data_bag"]
-	item = node["serverdensity"]["data_bag_item"] || node["fqdn"]
+	item = node["serverdensity"]["data_bag_item"] || node["fqdn"].gsub(/\./, "_")
 	sd_vars = data_bag_item(node["serverdensity"]["data_bag"], item)
 else
 	sd_vars = node["serverdensity"]

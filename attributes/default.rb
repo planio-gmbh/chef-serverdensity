@@ -7,7 +7,8 @@
 # Set this to the name of a data bag to override the node attributes
 default['serverdensity']['data_bag'] = nil
 # Set this to the id of an data bag item.
-# If the data_bag is set, this defaults to the current host's fqdn
+# If the data_bag is set, this defaults to the current host's FQDN with dots replaced with underscores
+# The host foo.example.com thus has the item ID foo_example_com by default
 default['serverdensity']['data_bag_item'] = nil
 
 default['serverdensity']['agent_key'] = "CHANGE_ME"
