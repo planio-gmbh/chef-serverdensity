@@ -1,64 +1,30 @@
-#
-# Cookbook Name:: serverdensity
-# Recipe:: install
-#
-# Copyright 2012, Escape Studios
-#
+case node["platform_family"]
+when "debian"
+  # Compatibility with https://github.com/akatz/chef-serverdensity
+  apt_repository "sd-agent" do
+    action :remove
+  end
 
-case node[:platform]
-	when "debian", "ubuntu"
-		#trust the Server Density GPG Key
-		#this step is required to tell apt that you trust the integrity of Server Density's apt repository
-		gpg_key_id = node[:serverdensity][:repository_key]
+	apt_repository "serverdensity" do
+    uri "http://www.serverdensity.com/downloads/linux/deb"
+    distribution "all"
+    components ["main"]
+    key "https://www.serverdensity.com/downloads/boxedice-public.key"
+	end
+when "rhel", "fedora"
+  yum_key "RPM-GPG-KEY-serverdensity" do
+    url "https://www.serverdensity.com/downloads/boxedice-public.key"
+    action :add
+  end
 
-		if gpg_key_id
-			gpg_key_url = "https://www.serverdensity.com/downloads/#{gpg_key_id}.key"
+  yum_repository "serverdensity" do
+    description "Server Density"
+    url "http://www.serverdensity.com/downloads/linux/redhat/"
+    key "RPM-GPG-KEY-serverdensity"
+    action :add
+  end
+end
 
-			gpg_key_already_installed = "apt-key list | grep #{gpg_key_id}"
-
-			if gpg_key_url
-				execute "serverdensity-add-gpg-key" do
-					command "wget -O - #{gpg_key_url} | apt-key add -"
-					notifies :run, "execute[serverdensity-apt-get-update]", :immediately
-					not_if gpg_key_already_installed
-				end
-			end
-		end
-
-		#configure the Server Density apt repository
-		local_file = "/etc/apt/sources.list.d/sd-agent.list"
-
-    cookbook_file "#{local_file}" do
-			owner "root"
-			group "root"
-			mode 0644
-			notifies :run, "execute[serverdensity-apt-get-update]", :immediately
-			action :create_if_missing
-    end
-
-		#update the local package list
-		execute "serverdensity-apt-get-update" do
-			command "apt-get update"
-			action :nothing
-		end
-	when "redhat", "centos", "fedora"
-		#install the sd-agent package, which configures a new package repository for yum
-		if node[:kernel][:machine] == "x86_64"
-			machine = "x86_64"
-		else
-			machine = "i386"
-		end
-
-    local_file = "/etc/yum.repos.d/serverdensity.repo"
-
-    cookbook_file "#{local_file}" do
-			owner "root"
-			group "root"
-			mode 0644
-			action :create_if_missing
-    end
-
-		package "sd-agent" do
-			action :install
-		end
+package "sd-agent" do
+  action :install
 end
