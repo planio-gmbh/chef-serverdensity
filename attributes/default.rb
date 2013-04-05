@@ -14,5 +14,5 @@ default['serverdensity']['data_bag_item'] = nil
 default['serverdensity']['user'] = "sd-agent"
 default['serverdensity']['group'] = "sd-agent"
 
-default['serverdensity']['agent_key'] = "CHANGE_ME"
-default['serverdensity']['sd_url'] = "CHANGE_ME"
+default['serverdensity']['config']['agent_key'] = "CHANGE_ME"
+default['serverdensity']['config']['sd_url'] = "CHANGE_ME"

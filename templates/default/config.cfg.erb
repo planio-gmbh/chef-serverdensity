@@ -1,3 +1,11 @@
+# Serverdensity configuration for <%= node["fqdn"] %>
+#
+# This script was automatically created by Chef.
+# All manual changes are going to be overridden
+#
+# Source: serverdensity::templates/default/config.cfg.erb
+
 [Main]
-sd_url: <%= @sd_url %>
-agent_key: <%= @agent_key %>
+<% @sd_vars.each_pair |key, value| %>
+<%= key %>: <%= value %>
+<% end %>
