@@ -6,6 +6,6 @@
 # Source: serverdensity::templates/default/config.cfg.erb
 
 [Main]
-<% @sd_vars.each_pair |key, value| %>
+<% @sd_vars.each_pair do |key, value| %>
 <%= key %>: <%= value %>
 <% end %>

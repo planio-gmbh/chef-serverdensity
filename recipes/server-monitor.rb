@@ -7,7 +7,10 @@
 
 if node["serverdensity"]["data_bag"]
 	item = node["serverdensity"]["data_bag_item"] || node["fqdn"].gsub(/\./, "_")
-	sd_vars = data_bag_item(node["serverdensity"]["data_bag"], item).to_hash.reject{|k, v| k == "id"}
+	sd_vars = data_bag_item(node["serverdensity"]["data_bag"], item).to_hash
+	sd_vars.delete_if do |k, v|
+		%w[id data_bag chef_type].include?(k)
+	end
 else
 	sd_vars = node["serverdensity"]["config"].to_hash
 end
