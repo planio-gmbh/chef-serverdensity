@@ -9,7 +9,7 @@ when "debian"
     uri "http://www.serverdensity.com/downloads/linux/deb"
     distribution "all"
     components ["main"]
-    key "https://www.serverdensity.com/downloads/boxedice-public.key"
+    key "boxedice-public.key" # use the cookbook file
 	end
 when "rhel", "fedora"
   yum_key "RPM-GPG-KEY-serverdensity" do
